@@ -1,8 +1,7 @@
 #!/bin/bash
 COUNTER=-99
 
-#    .---------- constant part!
-#    vvvv vvvv-- the code from above
+# Color constants
 NC='\033[0m' # No Color
 RED='\033[1;31m'
 WHITE='\033[1;37m'
