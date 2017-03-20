@@ -1,3 +1,5 @@
+# Remember to start RPC by either testrpc or geth --rpc otherwise this wont work
+
 #!/bin/bash
 COUNTER=-99
 
@@ -6,9 +8,9 @@ NC='\033[0m' # No Color
 RED='\033[1;31m'
 WHITE='\033[1;37m'
 CYAN='\033[0;36m'
-
 GREEN='\033[0;32m'
-GREEN='\033[1;37m'
+LGREEN='\033[1;32m'
+
 GREEN='\033[1;37m'
 GREEN='\033[1;37m'
 
@@ -37,8 +39,18 @@ function currentBlock(){
 
 # returns client information
 function clientVersion(){
-curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' | jq -r '.'
+    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' | jq -r '.'
 }
+
+
+function getBalance (){
+    echo 'Enter accountID:'
+    read accountID
+    echo 'Balance for account:'
+    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["'$accountID'", "latest"],"id":1}'| jq -r '.'
+    # update for account select... Need user input account number which equals hash account[0]= some hash
+    
+     }    
 
 function whiteLine(){
     echo -e "${WHITE}===============================================${NC}"
@@ -58,7 +70,7 @@ while [  $COUNTER  -ne 0 ]; do
     echo ' 2: Get Current Block'
     echo ' 3: Get Transaction Receipt'
     echo ' 4: Get Client Info'
-    echo ' 5: '
+    echo ' 5: Get Balance'
     echo ' 0: quit'
 
     echo ''
@@ -71,7 +83,7 @@ while [  $COUNTER  -ne 0 ]; do
 	[2]) currentBlock ;;
 	[3]) getTransInfo ;;
         [4]) clientVersion ;;
-        [5]) getTransInfo ;;
+        [5]) getBalance ;;
 	
 	[9]) echo "may be ok" ;;
 	[0]) echo "quitting" ;;
