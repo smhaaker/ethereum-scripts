@@ -47,7 +47,7 @@ function getBalance (){
     echo 'Enter accountID:'
     read accountID
     echo 'Balance for account:'
-    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["'$accountID'", "latest"],"id":1}'| jq -r '.'
+    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["'$accountID'", "latest"],"id":1}'| jq -r '.result' 
     # update for account select... Need user input account number which equals hash account[0]= some hash
     
      }    
@@ -60,6 +60,13 @@ function getPeers (){
 
 }
 
+# get block by nr.
+function getBlockByNr (){
+    echo 'Enter block nr'
+    read BLOCKNR
+    echo 'Block By Nr:'
+    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'$BLOCKNR'", true],"id":1}' | jq -r '.'
+}
 
 function whiteLine(){
     echo -e "${WHITE}===============================================${NC}"
@@ -81,6 +88,7 @@ while [  $COUNTER  -ne 0 ]; do
     echo ' 4: Get Client Info'
     echo ' 5: Get Balance'
     echo ' 6: Get Peers'
+    echo ' 7: Get Block By Nr'
     echo ' 0: quit'
 
     echo ''
@@ -95,7 +103,7 @@ while [  $COUNTER  -ne 0 ]; do
         [4]) clientVersion ;;
         [5]) getBalance ;;
 	[6]) getPeers ;;
-
+	[7]) getBlockByNr ;;
 	
 	[9]) echo "may be ok" ;;
 	[0]) echo "quitting" ;;

@@ -22,6 +22,8 @@ echo '........'
 
 R=$(curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_call","params":[{"to":"'$CONTRACT_ADDRESS'","data":"0x'$DATA'"},"latest"],"id":1}' | jq -r '.result')
 
+#"0x'$DATA'"
+
 echo 'Result:'
 echo $R
 
