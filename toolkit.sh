@@ -52,6 +52,15 @@ function getBalance (){
     
      }    
 
+
+# displays current peers
+function getPeers (){
+    echo 'Current Peers:'
+    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' | jq -r '.'
+
+}
+
+
 function whiteLine(){
     echo -e "${WHITE}===============================================${NC}"
 }
@@ -71,6 +80,7 @@ while [  $COUNTER  -ne 0 ]; do
     echo ' 3: Get Transaction Receipt'
     echo ' 4: Get Client Info'
     echo ' 5: Get Balance'
+    echo ' 6: Get Peers'
     echo ' 0: quit'
 
     echo ''
@@ -84,6 +94,8 @@ while [  $COUNTER  -ne 0 ]; do
 	[3]) getTransInfo ;;
         [4]) clientVersion ;;
         [5]) getBalance ;;
+	[6]) getPeers ;;
+
 	
 	[9]) echo "may be ok" ;;
 	[0]) echo "quitting" ;;
