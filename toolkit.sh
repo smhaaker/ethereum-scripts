@@ -2,9 +2,6 @@
 #A Shell Based Comprehensive Toolkit for Basic Ethereum Interaction 
 #Haaker, Nguyen, Egan
 #*******************************************************************************
-
-# Remember to start RPC by either testrpc or geth --rpc otherwise this wont work
-
 #!/bin/bash
 COUNTER=-99
 
