@@ -1,5 +1,7 @@
-#script to list ethereum accounts
-
+#**************************************
+#This script will list all eth accounts
+#Found on testrpc
+#**************************************
 echo ''
 echo 'Accounts:'
 
