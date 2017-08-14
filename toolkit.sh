@@ -1,5 +1,7 @@
-# Remember to start RPC by either testrpc or geth --rpc otherwise this wont work
-
+#*******************************************************************************
+#A Shell Based Comprehensive Toolkit for Basic Ethereum Interaction 
+#Haaker, Nguyen, Egan
+#*******************************************************************************
 #!/bin/bash
 COUNTER=-99
 
@@ -18,7 +20,7 @@ GREEN='\033[1;37m'
 
 function getAccounts (){
     echo 'Accounts:'
-    curl -sL 127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}' | jq -r '.result'| cut -c3-46 
+    curl -sL 127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}' | jq -r '.result'| cut -c3-46
 }
 
 
@@ -47,10 +49,10 @@ function getBalance (){
     echo 'Enter accountID:'
     read accountID
     echo 'Balance for account:'
-    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["'$accountID'", "latest"],"id":1}'| jq -r '.result' 
+    curl -sL http://127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["'$accountID'", "latest"],"id":1}'| jq -r '.result'
     # update for account select... Need user input account number which equals hash account[0]= some hash
-    
-     }    
+
+     }
 
 
 # displays current peers
@@ -72,6 +74,23 @@ function whiteLine(){
     echo -e "${WHITE}===============================================${NC}"
 }
 
+//Andrew Nguyen Functions
+function getAccountByNumber (){
+    echo 'Enter Account Number: '
+    read input
+    if [ $input -eq $input 2>/dev/null ]
+        then
+          echo "Account Number $input hex is: "
+          curl -sL 127.0.0.1:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}' | jq -r ".result[$input]"
+        else
+          echo "$input is not an integer"
+        fi
+}
+function compileOutputContract(){
+  echo "Enter the path of your contract: (example.sol)"
+  read input
+  solc --optimize --combined-json bin $input | jq -r '.'
+}
 
 clear
 
@@ -83,33 +102,34 @@ while [  $COUNTER  -ne 0 ]; do
     echo -e ' \t ' "${RED}Ethereum Toolkit Helper${NC}"
     echo '    Select Your Option [number + ENTER]:'
     echo ' 1: Get Current Accounts'
-    echo ' 2: Get Current Block'
-    echo ' 3: Get Transaction Receipt'
-    echo ' 4: Get Client Info'
-    echo ' 5: Get Balance'
-    echo ' 6: Get Peers'
-    echo ' 7: Get Block By Nr'
+    echo ' 2: Get Account Hex By Number'
+    echo ' 3: Get Current Block'
+    echo ' 4: Get Transaction Receipt'
+    echo ' 5: Get Client Info'
+    echo ' 6: Get Balance'
+    echo ' 7: Get Peers'
+    echo ' 8: Get Block By Nr'
+    echo ' 9: Compile Your Contract'
     echo ' 0: quit'
 
     echo ''
     whiteLine
 
     read COUNTER
-    
+
     case $COUNTER in
 	[1]) getAccounts ;;
-	[2]) currentBlock ;;
-	[3]) getTransInfo ;;
-        [4]) clientVersion ;;
-        [5]) getBalance ;;
-	[6]) getPeers ;;
-	[7]) getBlockByNr ;;
-	
-	[9]) echo "may be ok" ;;
+  [2]) getAccountByNumber ;;
+	[3]) currentBlock ;;
+	[4]) getTransInfo ;;
+        [5]) clientVersion ;;
+        [6]) getBalance ;;
+	[7]) getPeers ;;
+	[8]) getBlockByNr ;;
+
+	[9]) compileOutputContract ;;
 	[0]) echo "quitting" ;;
-        *) echo "INVALID ENTRY" ;;	
-    esac; 
-    
+        *) echo "INVALID ENTRY" ;;
+    esac;
+
 done
-
-
